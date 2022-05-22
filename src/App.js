@@ -1,15 +1,15 @@
-import "./App.css";
-import Navbar from "./components/Navbar";
-import Board from "./components/Board";
-import Keypad from "./components/Keypad";
-import initialBoard from "./board";
-import { createContext, useEffect, useState } from "react";
-import { generateWordSet } from "./wordSet";
-import { getWord } from "./getWord";
-import Result from "./components/Result";
-import Alert from "./components/Alert";
-import Scores from "./components/Scores";
-import Graph from "./components/Graph";
+import './App.css';
+import Navbar from './components/Navbar';
+import Board from './components/Board';
+import Keypad from './components/Keypad';
+import initialBoard from './board';
+import { createContext, useEffect, useState } from 'react';
+import { generateWordSet } from './wordSet';
+import { getWord } from './getWord';
+import Result from './components/Result';
+import Alert from './components/Alert';
+import Scores from './components/Scores';
+import Graph from './components/Graph';
 
 export const AppContext = createContext();
 
@@ -20,7 +20,7 @@ const App = () => {
     letterPos: 0,
   });
   const [wordList, setWordList] = useState(new Set());
-  const [correctWord, setCorrectWord] = useState("");
+  const [correctWord, setCorrectWord] = useState('');
 
   const [disabledKeys, setDisabledKeys] = useState([]);
   const [correctKeys, setCorrectKeys] = useState([]);
@@ -60,7 +60,7 @@ const App = () => {
       return;
     }
     const nboard = [...board];
-    nboard[attemptNo - 1][letterPos - 1] = "";
+    nboard[attemptNo - 1][letterPos - 1] = '';
     setBoard(nboard);
     setAttempts({ ...attempts, letterPos: letterPos - 1 });
   };
@@ -69,11 +69,10 @@ const App = () => {
     if (letterPos !== 5) {
       return;
     }
-    let guessedWord = "";
+    let guessedWord = '';
     for (let i = 0; i < 5; i++) {
       guessedWord += board[attemptNo - 1][i];
     }
-
     if (wordList.has(guessedWord.toLowerCase())) {
       setAttempts({ ...attempts, letterPos: 0, attemptNo: attemptNo + 1 });
     } else {
@@ -87,27 +86,28 @@ const App = () => {
     if (correctWord === guessedWord.toLowerCase()) {
       let score = 12 - 2 * (attemptNo - 1);
       setScore(score);
-      fetch("http://localhost:8000/scores", {
-        method: "POST",
+      fetch('http://localhost:8000/scores', {
+        method: 'POST',
         body: JSON.stringify({
           score,
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
+          'Content-type': 'application/json; charset=UTF-8',
         },
       });
+      console.log(guessedWord, correctWord);
       setResult({ ...result, gameOver: true, correctGuess: true });
       return;
     }
     if (attempts.attemptNo > 5) {
       setScore(0);
-      fetch("http://localhost:8000/scores", {
-        method: "POST",
+      fetch('http://localhost:8000/scores', {
+        method: 'POST',
         body: JSON.stringify({
           score: 0,
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
+          'Content-type': 'application/json; charset=UTF-8',
         },
       });
       setResult({ ...result, gameOver: true, correctGuess: false });

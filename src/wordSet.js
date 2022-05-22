@@ -1,4 +1,4 @@
-import words from "./words.txt";
+import words from './words.txt';
 
 export const generateWordSet = async () => {
   let wordSet;
@@ -7,7 +7,10 @@ export const generateWordSet = async () => {
       return response.text();
     })
     .then((data) => {
-      let arr = data.split("\n");
+      let arr = data.split('\n');
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].replace('\r', '');
+      }
       wordSet = new Set(arr);
     });
   return { wordSet };
